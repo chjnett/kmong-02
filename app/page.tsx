@@ -1,30 +1,75 @@
 import { Suspense } from "react"
-// import { supabase } from "@/lib/supabase"
+import { supabase } from "@/lib/supabase" // Direct import works for public reading
 import { HeroSection } from "@/components/hero-section"
 import { CategoryNav } from "@/components/category-nav"
 import { ProductGrid } from "@/components/product-grid"
 import { ProductDetailWrapper } from "@/components/product-detail-wrapper"
 import { KakaoButton } from "@/components/kakao-button"
-import { categories as staticCategories, products as staticProducts } from "@/lib/data"
+import type { Category, Product } from "@/lib/data"
 
-// Force dynamic rendering since we rely on searchParams
+// Force dynamic rendering since we rely on searchParams and DB
 export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 export default async function HomePage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string; subCategory?: string }>
 }) {
-  // Await searchParams in Next.js 15+
   const params = await searchParams
   const categoryParam = (params.category || "전체").normalize("NFC")
   const subCategoryParam = params.subCategory?.normalize("NFC")
 
-  // 1. Categories
-  const categories = staticCategories
+  // 1. Fetch Categories
+  const { data: categoriesData } = await supabase
+    .from('categories')
+    .select('*, sub_categories(name, id)') // Select sub_categories
+    .order('order', { ascending: true })
 
-  // 2. Filter Products (Mimic DB Logic)
-  let formattedProducts = staticProducts
+  // Map to UI Category Interface
+  const mappedCategories: Category[] = [
+    { name: "전체", subCategories: [] },
+    ...(categoriesData?.map(c => ({
+      name: c.name,
+      subCategories: c.sub_categories?.map((s: any) => s.name) || []
+    })) || [])
+  ]
+
+  // 2. Fetch Products
+  // We fetch all products for now as the dataset is small. For scale, filtering should move to DB query.
+  const { data: productsData } = await supabase
+    .from('products')
+    .select(`
+        *,
+        sub_categories (
+            name,
+            categories (
+                name
+            )
+        )
+    `)
+    .order('created_at', { ascending: false })
+
+  // Map to UI Product Interface
+  const mappedProducts: Product[] = productsData?.map((p: any) => ({
+    id: p.id,
+    title: p.name,
+    category: p.sub_categories?.categories?.name || "Uncategorized",
+    subCategory: p.sub_categories?.name || "Uncategorized",
+    image: p.img_urls?.[0] || "",
+    gallery: p.img_urls || [],
+    externalUrl: p.external_url || "",
+    specs: {
+      modelNo: p.specs?.modelNo || "",
+      material: p.specs?.material || "",
+      size: p.specs?.size || "",
+      color: p.specs?.color || ""
+    },
+    description: p.description || ""
+  })) || []
+
+  // 3. Filter Logic (Same as before)
+  let formattedProducts = mappedProducts
 
   if (categoryParam !== "전체") {
     formattedProducts = formattedProducts.filter(p => p.category === categoryParam)
@@ -38,9 +83,9 @@ export default async function HomePage({
     <main className="min-h-screen bg-[#000000]">
       <HeroSection />
 
-      <section className="px-4 py-12 md:px-8 lg:px-16">
+      <section id="main-content" className="px-4 py-12 md:px-8 lg:px-16">
         <CategoryNav
-          categories={categories}
+          categories={mappedCategories}
           selectedCategory={categoryParam}
           selectedSubCategory={subCategoryParam || null}
         />

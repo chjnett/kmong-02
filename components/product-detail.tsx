@@ -37,6 +37,7 @@ function ProductDetailContent({
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const gallery = product.gallery || [product.image] || []
+  // const gallery = [product.image] // Reverted: Full gallery support restored
 
   // Safe navigation
   const nextImage = () => {

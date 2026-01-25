@@ -9,8 +9,15 @@ export function HeroSection() {
     setIsLoaded(true)
   }, [])
 
+  const scrollToContent = () => {
+    const content = document.getElementById('main-content')
+    if (content) {
+      content.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
-    <section className="relative flex min-h-[50vh] flex-col items-center justify-center px-4 py-16 md:min-h-[60vh]">
+    <section className="relative flex min-h-screen flex-col items-center justify-center px-4 py-16">
       {/* Subtle gold glow effect */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className={`absolute top-1/2 left-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#c9a962]/5 blur-[100px] transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`} />
@@ -48,7 +55,8 @@ export function HeroSection() {
 
       {/* Scroll indicator */}
       <div
-        className={`absolute bottom-8 left-1/2 z-10 -translate-x-1/2 animate-bounce transition-opacity duration-1000 delay-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'
+        onClick={scrollToContent}
+        className={`absolute bottom-8 left-1/2 z-10 -translate-x-1/2 animate-bounce cursor-pointer transition-opacity duration-1000 delay-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
       >
         <div className="flex flex-col items-center gap-2">
