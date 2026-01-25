@@ -1,63 +1,53 @@
-"use client"
-
-import { useState, useMemo } from "react"
+import { Suspense } from "react"
+// import { supabase } from "@/lib/supabase"
 import { HeroSection } from "@/components/hero-section"
 import { CategoryNav } from "@/components/category-nav"
 import { ProductGrid } from "@/components/product-grid"
-import { ProductDetail } from "@/components/product-detail"
+import { ProductDetailWrapper } from "@/components/product-detail-wrapper"
 import { KakaoButton } from "@/components/kakao-button"
-import { products, categories, type Product } from "@/lib/data"
+import { categories as staticCategories, products as staticProducts } from "@/lib/data"
 
-export default function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState("전체")
-  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null)
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+// Force dynamic rendering since we rely on searchParams
+export const dynamic = "force-dynamic"
 
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      if (selectedCategory === "전체") return true
-      if (product.category !== selectedCategory) return false
-      if (selectedSubCategory && product.subCategory !== selectedSubCategory) return false
-      return true
-    })
-  }, [selectedCategory, selectedSubCategory])
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string; subCategory?: string }>
+}) {
+  // Await searchParams in Next.js 15+
+  const params = await searchParams
+  const categoryParam = params.category || "전체"
+  const subCategoryParam = params.subCategory
 
-  const handleProductClick = (product: Product) => {
-    setSelectedProduct(product)
-    setIsModalOpen(true)
+  // 1. Categories
+  const categories = staticCategories
+
+  // 2. Filter Products (Mimic DB Logic)
+  let formattedProducts = staticProducts
+
+  if (categoryParam !== "전체") {
+    formattedProducts = formattedProducts.filter(p => p.category === categoryParam)
   }
 
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category)
-    setSelectedSubCategory(null)
+  if (subCategoryParam) {
+    formattedProducts = formattedProducts.filter(p => p.subCategory === subCategoryParam)
   }
 
   return (
     <main className="min-h-screen bg-[#000000]">
       <HeroSection />
-      
+
       <section className="px-4 py-12 md:px-8 lg:px-16">
         <CategoryNav
           categories={categories}
-          selectedCategory={selectedCategory}
-          selectedSubCategory={selectedSubCategory}
-          onCategoryChange={handleCategoryChange}
-          onSubCategoryChange={setSelectedSubCategory}
+          selectedCategory={categoryParam}
+          selectedSubCategory={subCategoryParam || null}
         />
-        
-        <ProductGrid
-          products={filteredProducts}
-          onProductClick={handleProductClick}
-        />
-      </section>
 
-      <ProductDetail
-        product={selectedProduct}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        isAdmin={false}
-      />
+        {/* Pass data to Client Component wrapper which handles Modal state */}
+        <ProductDetailWrapper products={formattedProducts} />
+      </section>
 
       <KakaoButton />
     </main>

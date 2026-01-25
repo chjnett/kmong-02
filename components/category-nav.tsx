@@ -3,21 +3,35 @@
 import type { Category } from "@/lib/data"
 import { cn } from "@/lib/utils"
 
+import { useRouter } from "next/navigation"
+
 interface CategoryNavProps {
   categories: Category[]
   selectedCategory: string
   selectedSubCategory: string | null
-  onCategoryChange: (category: string) => void
-  onSubCategoryChange: (subCategory: string | null) => void
 }
 
 export function CategoryNav({
   categories,
   selectedCategory,
   selectedSubCategory,
-  onCategoryChange,
-  onSubCategoryChange,
 }: CategoryNavProps) {
+  const router = useRouter()
+
+  const handleCategoryClick = (categoryName: string) => {
+    // Navigate to new category, clear subcategory
+    router.push(`/?category=${encodeURIComponent(categoryName)}`)
+  }
+
+  const handleSubCategoryClick = (subCategoryName: string | null) => {
+    // Keep current category, set subcategory
+    if (subCategoryName) {
+      router.push(`/?category=${encodeURIComponent(selectedCategory)}&subCategory=${encodeURIComponent(subCategoryName)}`)
+    } else {
+      router.push(`/?category=${encodeURIComponent(selectedCategory)}`)
+    }
+  }
+
   const currentCategory = categories.find((c) => c.name === selectedCategory)
   const subCategories = currentCategory?.subCategories || []
 
@@ -28,7 +42,7 @@ export function CategoryNav({
         {categories.map((category) => (
           <button
             key={category.name}
-            onClick={() => onCategoryChange(category.name)}
+            onClick={() => handleCategoryClick(category.name)}
             className={cn(
               "relative px-4 py-2 text-xs font-light tracking-[0.2em] uppercase transition-all duration-300 md:px-6 md:text-sm",
               selectedCategory === category.name
@@ -48,7 +62,7 @@ export function CategoryNav({
       {subCategories.length > 0 && (
         <div className="flex flex-wrap justify-center gap-2 md:gap-3">
           <button
-            onClick={() => onSubCategoryChange(null)}
+            onClick={() => handleSubCategoryClick(null)}
             className={cn(
               "rounded-full border px-4 py-1.5 text-[10px] font-light tracking-[0.15em] uppercase transition-all duration-300 md:px-5 md:py-2 md:text-xs",
               selectedSubCategory === null
@@ -61,7 +75,7 @@ export function CategoryNav({
           {subCategories.map((sub) => (
             <button
               key={sub}
-              onClick={() => onSubCategoryChange(sub)}
+              onClick={() => handleSubCategoryClick(sub)}
               className={cn(
                 "rounded-full border px-4 py-1.5 text-[10px] font-light tracking-[0.15em] uppercase transition-all duration-300 md:px-5 md:py-2 md:text-xs",
                 selectedSubCategory === sub
