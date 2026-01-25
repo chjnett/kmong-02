@@ -13,6 +13,7 @@ export interface Product {
   image: string
   gallery?: string[]
   externalUrl: string
+  price?: string
   specs: ProductSpecs
   description: string
 }

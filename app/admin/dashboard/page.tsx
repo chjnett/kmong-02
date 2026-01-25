@@ -190,8 +190,8 @@ export default function AdminDashboardPage() {
                                             No Image
                                         </div>
                                     )}
-                                    {/* Actions Overlay */}
-                                    <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+                                    {/* Actions Overlay (Desktop Only) */}
+                                    <div className="absolute inset-0 hidden items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100 md:flex">
                                         <Button
                                             asChild
                                             size="icon"
@@ -217,10 +217,35 @@ export default function AdminDashboardPage() {
 
                                 {/* Info */}
                                 <div className="flex flex-1 flex-col p-4">
-                                    <h3 className="line-clamp-1 font-medium text-[#f5f5f5]">{product.name}</h3>
-                                    <p className="mt-1 text-xs text-[#737373]">
-                                        ID: {product.id.slice(0, 8)}...
-                                    </p>
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <h3 className="line-clamp-1 font-medium text-[#f5f5f5]">{product.name}</h3>
+                                            <p className="mt-1 text-xs text-[#737373]">
+                                                ID: {product.id.slice(0, 8)}...
+                                            </p>
+                                        </div>
+                                        {/* Mobile Actions (Visible only on mobile) */}
+                                        <div className="flex gap-1 md:hidden">
+                                            <Button
+                                                asChild
+                                                size="icon"
+                                                variant="ghost"
+                                                className="h-8 w-8 text-[#a3a3a3] hover:text-[#f5f5f5]"
+                                            >
+                                                <Link href={`/admin/dashboard/products/${product.id}`}>
+                                                    <Pencil className="h-4 w-4" />
+                                                </Link>
+                                            </Button>
+                                            <Button
+                                                size="icon"
+                                                variant="ghost"
+                                                className="h-8 w-8 text-[#a3a3a3] hover:text-red-500"
+                                                onClick={() => handleDelete(product.id)}
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </div>
                                     <div className="mt-auto pt-4 text-xs text-[#525252]">
                                         {new Date(product.created_at).toLocaleDateString()}
                                     </div>

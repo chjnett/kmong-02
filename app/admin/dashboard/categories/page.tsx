@@ -283,9 +283,9 @@ export default function CategoryManagementPage() {
                                                 <span className="text-sm text-[#a3a3a3]">{sub.name}</span>
                                                 <button
                                                     onClick={() => handleDeleteSubCategory(sub.id)}
-                                                    className="opacity-0 group-hover:opacity-100 text-[#525252] hover:text-red-500 transition-opacity"
+                                                    className="p-2 md:p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 text-[#525252] hover:text-red-500 transition-opacity"
                                                 >
-                                                    <Trash2 className="h-3 w-3" />
+                                                    <Trash2 className="h-4 w-4 md:h-3 md:w-3" />
                                                 </button>
                                             </li>
                                         ))}

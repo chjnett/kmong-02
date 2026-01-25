@@ -38,8 +38,10 @@ export default function ProductEditPage({ params }: PageProps) {
         name: "",
         category: "",
         subCategory: "",
+
         description: "",
         external_url: "",
+        price: "",
         img_urls: [] as string[],
         specs: {
             modelNo: "",
@@ -139,6 +141,7 @@ export default function ProductEditPage({ params }: PageProps) {
                 subCategory: subCategoryName,
                 description: data.description || "",
                 external_url: data.external_url,
+                price: data.price || "",
                 img_urls: data.img_urls || [],
                 specs: (data.specs as any) || { modelNo: "", material: "", size: "", color: "" }
             })
@@ -188,6 +191,7 @@ export default function ProductEditPage({ params }: PageProps) {
                     sub_id: directLookUp.id,
                     description: formData.description,
                     external_url: formData.external_url,
+                    price: formData.price,
                     img_urls: formData.img_urls,
                     specs: formData.specs
                 }
@@ -200,6 +204,7 @@ export default function ProductEditPage({ params }: PageProps) {
                 sub_id: matchedSub.id,
                 description: formData.description,
                 external_url: formData.external_url,
+                price: formData.price,
                 img_urls: formData.img_urls,
                 specs: formData.specs
             }
@@ -359,41 +364,17 @@ export default function ProductEditPage({ params }: PageProps) {
                             </div>
                         </div>
 
+
                         <div className="space-y-4 rounded-lg border border-[#262626] bg-[#111111] p-6">
-                            <h2 className="text-lg font-medium text-[#f5f5f5]">제품 스펙</h2>
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label className="text-[#a3a3a3]">모델 번호</Label>
-                                    <Input
-                                        value={formData.specs.modelNo}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, specs: { ...prev.specs, modelNo: e.target.value } }))}
-                                        className="border-[#262626] bg-[#0a0a0a] text-[#f5f5f5]"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[#a3a3a3]">소재</Label>
-                                    <Input
-                                        value={formData.specs.material}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, specs: { ...prev.specs, material: e.target.value } }))}
-                                        className="border-[#262626] bg-[#0a0a0a] text-[#f5f5f5]"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[#a3a3a3]">사이즈</Label>
-                                    <Input
-                                        value={formData.specs.size}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, specs: { ...prev.specs, size: e.target.value } }))}
-                                        className="border-[#262626] bg-[#0a0a0a] text-[#f5f5f5]"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[#a3a3a3]">컬러</Label>
-                                    <Input
-                                        value={formData.specs.color}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, specs: { ...prev.specs, color: e.target.value } }))}
-                                        className="border-[#262626] bg-[#0a0a0a] text-[#f5f5f5]"
-                                    />
-                                </div>
+                            <h2 className="text-lg font-medium text-[#f5f5f5]">가격 정보</h2>
+                            <div className="space-y-2">
+                                <Label className="text-[#a3a3a3]">판매 가격</Label>
+                                <Input
+                                    value={formData.price}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
+                                    className="border-[#262626] bg-[#0a0a0a] text-[#f5f5f5]"
+                                    placeholder="예: 12,000,000원 (텍스트로 입력 가능)"
+                                />
                             </div>
                         </div>
                     </div>

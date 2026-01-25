@@ -46,13 +46,13 @@ export function CategoryNav({
             className={cn(
               "relative px-4 py-2 text-xs font-light tracking-[0.3em] uppercase transition-all duration-500 md:text-sm",
               selectedCategory === category.name
-                ? "text-[#c9a962] drop-shadow-[0_0_8px_rgba(201,169,98,0.2)]"
+                ? "text-[#ffffff] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]"
                 : "text-[#404040] hover:text-[#737373]"
             )}
           >
             {category.name}
             {selectedCategory === category.name && (
-              <span className="absolute right-0 bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-[#c9a962] to-transparent opacity-80" />
+              <span className="absolute right-0 bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-[#ffffff] to-transparent opacity-80" />
             )}
           </button>
         ))}
@@ -66,7 +66,7 @@ export function CategoryNav({
             className={cn(
               "rounded-full border px-4 py-1.5 text-[10px] font-light tracking-[0.15em] uppercase transition-all duration-300 md:px-5 md:py-2 md:text-xs",
               selectedSubCategory === null
-                ? "border-[#c9a962]/30 bg-[#c9a962]/5 text-[#c9a962]"
+                ? "border-[#ffffff]/20 bg-[#ffffff]/5 text-[#ffffff]"
                 : "border-[#1a1a1a] bg-[#050505] text-[#525252] hover:border-[#333] hover:text-[#a3a3a3]"
             )}
           >
@@ -79,7 +79,7 @@ export function CategoryNav({
               className={cn(
                 "rounded-full border px-4 py-1.5 text-[10px] font-light tracking-[0.15em] uppercase transition-all duration-300 md:px-5 md:py-2 md:text-xs",
                 selectedSubCategory === sub
-                  ? "border-[#c9a962]/30 bg-[#c9a962]/5 text-[#c9a962]"
+                  ? "border-[#ffffff]/20 bg-[#ffffff]/5 text-[#ffffff]"
                   : "border-[#1a1a1a] bg-[#050505] text-[#525252] hover:border-[#333] hover:text-[#a3a3a3]"
               )}
             >

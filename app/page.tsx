@@ -3,7 +3,6 @@ import { supabase } from "@/lib/supabase" // Direct import works for public read
 import { HeroSection } from "@/components/hero-section"
 import { CategoryNav } from "@/components/category-nav"
 import { ProductGrid } from "@/components/product-grid"
-import { ProductDetailWrapper } from "@/components/product-detail-wrapper"
 import { KakaoButton } from "@/components/kakao-button"
 import type { Category, Product } from "@/lib/data"
 
@@ -59,6 +58,7 @@ export default async function HomePage({
     image: p.img_urls?.[0] || "",
     gallery: p.img_urls || [],
     externalUrl: p.external_url || "",
+    price: p.price || "",
     specs: {
       modelNo: p.specs?.modelNo || "",
       material: p.specs?.material || "",
@@ -90,9 +90,7 @@ export default async function HomePage({
           selectedSubCategory={subCategoryParam || null}
         />
 
-        {/* Pass data to Client Component wrapper which handles Modal state */}
-        <ProductDetailWrapper
-          key={`${categoryParam}-${subCategoryParam || 'all'}`}
+        <ProductGrid
           products={formattedProducts}
         />
       </section>
