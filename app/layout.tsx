@@ -15,21 +15,8 @@ export const metadata: Metadata = {
   description: '시대를 초월한 럭셔리 아이템을 엄선하여 소개합니다',
   generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/01_logo.jpg',
+    apple: '/01_logo.jpg',
   },
 }
 

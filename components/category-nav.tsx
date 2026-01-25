@@ -36,23 +36,23 @@ export function CategoryNav({
   const subCategories = currentCategory?.subCategories || []
 
   return (
-    <nav className="mb-10 space-y-6">
+    <nav className="mb-14 space-y-8">
       {/* Main Categories - Tabs */}
-      <div className="flex flex-wrap justify-center gap-1 border-b border-[#1a1a1a] pb-4 md:gap-2">
+      <div className="flex flex-wrap justify-center gap-2 border-b border-[#111111] pb-6 md:gap-8">
         {categories.map((category) => (
           <button
             key={category.name}
             onClick={() => handleCategoryClick(category.name)}
             className={cn(
-              "relative px-4 py-2 text-xs font-light tracking-[0.2em] uppercase transition-all duration-300 md:px-6 md:text-sm",
+              "relative px-4 py-2 text-xs font-light tracking-[0.3em] uppercase transition-all duration-500 md:text-sm",
               selectedCategory === category.name
-                ? "text-[#c9a962]"
-                : "text-[#737373] hover:text-[#a3a3a3]"
+                ? "text-[#c9a962] drop-shadow-[0_0_8px_rgba(201,169,98,0.2)]"
+                : "text-[#404040] hover:text-[#737373]"
             )}
           >
             {category.name}
             {selectedCategory === category.name && (
-              <span className="absolute right-0 bottom-0 left-0 h-px bg-[#c9a962]" />
+              <span className="absolute right-0 bottom-0 left-0 h-px bg-gradient-to-r from-transparent via-[#c9a962] to-transparent opacity-80" />
             )}
           </button>
         ))}
@@ -60,14 +60,14 @@ export function CategoryNav({
 
       {/* Sub Categories - Pills */}
       {subCategories.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 transition-opacity duration-500 ease-in-out">
           <button
             onClick={() => handleSubCategoryClick(null)}
             className={cn(
               "rounded-full border px-4 py-1.5 text-[10px] font-light tracking-[0.15em] uppercase transition-all duration-300 md:px-5 md:py-2 md:text-xs",
               selectedSubCategory === null
-                ? "border-[#c9a962] bg-[#c9a962]/10 text-[#c9a962]"
-                : "border-[#262626] bg-transparent text-[#737373] hover:border-[#404040] hover:text-[#a3a3a3]"
+                ? "border-[#c9a962]/30 bg-[#c9a962]/5 text-[#c9a962]"
+                : "border-[#1a1a1a] bg-[#050505] text-[#525252] hover:border-[#333] hover:text-[#a3a3a3]"
             )}
           >
             전체보기
@@ -79,8 +79,8 @@ export function CategoryNav({
               className={cn(
                 "rounded-full border px-4 py-1.5 text-[10px] font-light tracking-[0.15em] uppercase transition-all duration-300 md:px-5 md:py-2 md:text-xs",
                 selectedSubCategory === sub
-                  ? "border-[#c9a962] bg-[#c9a962]/10 text-[#c9a962]"
-                  : "border-[#262626] bg-transparent text-[#737373] hover:border-[#404040] hover:text-[#a3a3a3]"
+                  ? "border-[#c9a962]/30 bg-[#c9a962]/5 text-[#c9a962]"
+                  : "border-[#1a1a1a] bg-[#050505] text-[#525252] hover:border-[#333] hover:text-[#a3a3a3]"
               )}
             >
               {sub}
