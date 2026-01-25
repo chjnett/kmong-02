@@ -17,8 +17,8 @@ export default async function HomePage({
 }) {
   // Await searchParams in Next.js 15+
   const params = await searchParams
-  const categoryParam = params.category || "전체"
-  const subCategoryParam = params.subCategory
+  const categoryParam = (params.category || "전체").normalize("NFC")
+  const subCategoryParam = params.subCategory?.normalize("NFC")
 
   // 1. Categories
   const categories = staticCategories
@@ -46,7 +46,10 @@ export default async function HomePage({
         />
 
         {/* Pass data to Client Component wrapper which handles Modal state */}
-        <ProductDetailWrapper products={formattedProducts} />
+        <ProductDetailWrapper
+          key={`${categoryParam}-${subCategoryParam || 'all'}`}
+          products={formattedProducts}
+        />
       </section>
 
       <KakaoButton />

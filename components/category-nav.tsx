@@ -20,15 +20,15 @@ export function CategoryNav({
 
   const handleCategoryClick = (categoryName: string) => {
     // Navigate to new category, clear subcategory
-    router.push(`/?category=${encodeURIComponent(categoryName)}`)
+    router.push(`/?category=${encodeURIComponent(categoryName)}`, { scroll: false })
   }
 
   const handleSubCategoryClick = (subCategoryName: string | null) => {
     // Keep current category, set subcategory
     if (subCategoryName) {
-      router.push(`/?category=${encodeURIComponent(selectedCategory)}&subCategory=${encodeURIComponent(subCategoryName)}`)
+      router.push(`/?category=${encodeURIComponent(selectedCategory)}&subCategory=${encodeURIComponent(subCategoryName)}`, { scroll: false })
     } else {
-      router.push(`/?category=${encodeURIComponent(selectedCategory)}`)
+      router.push(`/?category=${encodeURIComponent(selectedCategory)}`, { scroll: false })
     }
   }
 

@@ -147,25 +147,7 @@ export const products: Product[] = [
     },
     description: "일상과 특별한 날 모두를 위한 엘레강스 크로스백입니다. 스크래치에 강한 사피아노 텍스처 가죽은 세련된 외관과 실용성을 동시에 제공합니다. 조절 가능한 슬림 스트랩으로 다양한 스타일링이 가능합니다."
   },
-  // 가방 - 클러치
-  {
-    id: "6",
-    title: "이브닝 새틴 클러치",
-    category: "가방",
-    subCategory: "클러치",
-    image: "https://images.unsplash.com/photo-1601924921557-45e6c824c7b7?w=800&h=1000&fit=crop",
-    gallery: [
-      "https://images.unsplash.com/photo-1601924921557-45e6c824c7b7?w=800&h=1000&fit=crop"
-    ],
-    externalUrl: "https://example.com/product/6",
-    specs: {
-      modelNo: "ET-CL-001",
-      material: "실크 새틴 / 크리스탈 장식",
-      size: "W24 x H12 x D4 cm",
-      color: "미드나잇 블루"
-    },
-    description: "갈라 디너와 레드카펫을 위한 특별한 이브닝 클러치입니다. 프랑스 리옹에서 생산된 최고급 실크 새틴에 스와로브스키 크리스탈이 별빛처럼 수놓아져 있습니다. 탈착 가능한 체인 스트랩이 포함되어 있습니다."
-  },
+
   // 지갑 - 장지갑
   {
     id: "7",
@@ -185,25 +167,7 @@ export const products: Product[] = [
     },
     description: "ETERNA의 아이코닉한 장지갑입니다. 매끄럽고 광택 있는 박스 카프 가죽은 클래식한 품격을 더합니다. 12개의 카드 슬롯, 2개의 지폐 수납공간, 지퍼 코인 포켓으로 실용성을 극대화했습니다."
   },
-  // 지갑 - 반지갑
-  {
-    id: "8",
-    title: "컴팩트 바이폴드",
-    category: "지갑",
-    subCategory: "반지갑",
-    image: "https://images.unsplash.com/photo-1624996379697-f01d168b1a52?w=800&h=1000&fit=crop",
-    gallery: [
-      "https://images.unsplash.com/photo-1624996379697-f01d168b1a52?w=800&h=1000&fit=crop"
-    ],
-    externalUrl: "https://example.com/product/8",
-    specs: {
-      modelNo: "ET-BF-001",
-      material: "엡송 레더",
-      size: "W11 x H9 x D1.5 cm",
-      color: "에톱 그레이"
-    },
-    description: "슬림한 실루엣의 클래식 바이폴드 지갑입니다. 긁힘에 강한 엡송 그레인 가죽은 오랜 사용에도 깔끔한 외관을 유지합니다. 미니멀한 디자인 속에 8개의 카드 슬롯을 효율적으로 배치했습니다."
-  },
+
   // 지갑 - 카드지갑
   {
     id: "9",
@@ -393,25 +357,7 @@ export const products: Product[] = [
     },
     description: "움직임에 따라 빛나는 드롭 이어링입니다. 파베 세팅된 다이아몬드가 눈부신 캐스케이드를 연출하며, 특별한 저녁을 위한 완벽한 선택입니다."
   },
-  // 액세서리 - 스카프
-  {
-    id: "19",
-    title: "실크 프린트 스카프",
-    category: "액세서리",
-    subCategory: "스카프",
-    image: "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8b?w=800&h=1000&fit=crop",
-    gallery: [
-      "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8b?w=800&h=1000&fit=crop"
-    ],
-    externalUrl: "https://example.com/product/19",
-    specs: {
-      modelNo: "ET-SC-001",
-      material: "100% 실크 트윌",
-      size: "90 x 90 cm",
-      color: "네이비 / 골드 프린트"
-    },
-    description: "프랑스 리옹의 실크 공방에서 탄생한 아트 피스입니다. 저명한 아티스트와의 협업으로 완성된 독점 프린트가 손으로 직접 롤 헴 처리된 가장자리와 함께 최고의 품질을 선사합니다."
-  },
+
   // 액세서리 - 벨트
   {
     id: "20",
