@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Database } from "@/lib/database.types"
 import { useToast } from "@/components/ui/use-toast"
 import { supabase } from "@/lib/supabase"
-import { SeedButton } from "@/components/seed-button"
+// import { SeedButton } from "@/components/seed-button"
 import { cn } from "@/lib/utils"
 
 type ProductWithCategory = Database['public']['Tables']['products']['Row'] & {
@@ -109,7 +109,7 @@ export default function AdminDashboardPage() {
                         <p className="text-[#737373]">등록된 럭셔리 상품을 관리하세요.</p>
                     </div>
                     <div className="flex gap-2">
-                        <SeedButton />
+                        {/* <SeedButton /> */}
                         <Button asChild variant="outline" className="border-[#262626] bg-transparent text-[#a3a3a3] hover:bg-[#262626] hover:text-[#f5f5f5]">
                             <Link href="/admin/dashboard/categories">
                                 <FolderOpen className="mr-2 h-4 w-4" />
