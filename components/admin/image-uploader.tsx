@@ -25,7 +25,7 @@ export function ImageUploader({ images, onChange, maxImages = Infinity }: ImageU
         setIsUploading(true)
         const newImages = [...images]
 
-        // const supabase = createClient(...) // Removed
+
 
 
         try {

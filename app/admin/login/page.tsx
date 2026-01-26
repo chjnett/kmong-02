@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@supabase/supabase-js"
+import { supabase } from "@/lib/supabase"
 import { Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -23,11 +23,6 @@ export default function AdminLoginPage() {
         setIsLoading(true)
 
         try {
-            const supabase = createClient(
-                process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-            )
-
             const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
@@ -40,7 +35,7 @@ export default function AdminLoginPage() {
             // Check if user has admin role
             const { data: profile, error: profileError } = await supabase
                 .from('profiles')
-                .select('role')
+                .select('*')
                 .eq('id', data.user.id)
                 .single()
 
@@ -62,10 +57,6 @@ export default function AdminLoginPage() {
                 description: error.message || "이메일 또는 비밀번호를 확인해주세요.",
             })
             // Optional: Sign out if auth was successful but role check failed
-            const supabase = createClient(
-                process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-            )
             await supabase.auth.signOut()
         } finally {
             setIsLoading(false)

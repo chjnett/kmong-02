@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@supabase/supabase-js"
+import { supabase } from "@/lib/supabase"
 import { Loader2 } from "lucide-react"
 
 export default function AdminPage() {
@@ -11,11 +11,6 @@ export default function AdminPage() {
 
     useEffect(() => {
         const checkUser = async () => {
-            const supabase = createClient(
-                process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-            )
-
             const { data: { session } } = await supabase.auth.getSession()
 
             if (!session) {
@@ -26,7 +21,7 @@ export default function AdminPage() {
             // Verify admin role
             const { data: profile } = await supabase
                 .from('profiles')
-                .select('role')
+                .select('*')
                 .eq('id', session.user.id)
                 .single()
 
