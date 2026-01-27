@@ -8,6 +8,7 @@ import { Plus, Pencil, Trash2, Loader2, LogOut, FolderOpen } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
+
 import { Database } from "@/lib/database.types"
 import { useToast } from "@/components/ui/use-toast"
 import { supabase } from "@/lib/supabase"
@@ -29,6 +30,7 @@ export default function AdminDashboardPage() {
     const [products, setProducts] = useState<ProductWithCategory[]>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [activeCategory, setActiveCategory] = useState<string>("All")
+
     const [isLoading, setIsLoading] = useState(true)
     const router = useRouter()
     const { toast } = useToast()
@@ -133,6 +135,8 @@ export default function AdminDashboardPage() {
                     </div>
                 </div>
 
+
+
                 {/* Category Filter Tabs */}
                 <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
                     <Button
@@ -222,6 +226,21 @@ export default function AdminDashboardPage() {
                                             <h3 className="line-clamp-1 font-medium text-[#f5f5f5]">{product.name}</h3>
                                             <p className="mt-1 text-xs text-[#737373]">
                                                 ID: {product.id.slice(0, 8)}...
+                                            </p>
+                                            <p className="mt-1 text-sm font-medium text-[#c9a962]">
+                                                {/* @ts-ignore */}
+                                                {(() => {
+                                                    const priceVal = product.specs?.price;
+                                                    if (!priceVal) return '가격 미정';
+                                                    // Remove commas if string
+                                                    const num = Number(String(priceVal).replace(/,/g, ''));
+                                                    if (isNaN(num)) return priceVal; // Return original string if not number (e.g. "문의")
+
+                                                    // Heuristic: If price is less than 10000, assume it's in thousands unit
+                                                    // This handles "1250" -> 1,250,000
+                                                    const finalPrice = num < 10000 ? num * 1000 : num;
+                                                    return `${finalPrice.toLocaleString()}원`;
+                                                })()}
                                             </p>
                                         </div>
                                         {/* Mobile Actions (Visible only on mobile) */}

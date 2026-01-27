@@ -1,0 +1,16 @@
+--- Product Prices ---
+Name: ㅇㅇ
+Specs Price Raw: ㅇ (Type: string)
+----------------------
+Name: 11_RO150
+Specs Price Raw: 문의 (Type: string)
+----------------------
+Name: 1_RO160
+Specs Price Raw: 문의 (Type: string)
+----------------------
+Name: 18_RO144
+Specs Price Raw: 문의 (Type: string)
+----------------------
+Name: 16_RO146
+Specs Price Raw: 문의 (Type: string)
+----------------------

@@ -43,7 +43,18 @@ export default async function ProductPage({
         image: productData.img_urls?.[0] || "",
         gallery: productData.img_urls || [],
         externalUrl: productData.external_url || "",
-        price: productData.price || "",
+        price: (() => {
+            const priceVal = productData.specs?.price;
+            if (!priceVal) return "";
+            // Remove commas if string
+            const num = Number(String(priceVal).replace(/,/g, ''));
+            if (isNaN(num)) return priceVal; // Return original string if not number (e.g. "문의")
+
+            // Heuristic: If price is less than 10000, assume it's in thousands unit
+            // This handles "1250" -> 1,250,000
+            const finalPrice = num < 10000 ? num * 1000 : num;
+            return `${finalPrice.toLocaleString()}원`;
+        })(),
         specs: {
             modelNo: productData.specs?.modelNo || "",
             material: productData.specs?.material || "",
