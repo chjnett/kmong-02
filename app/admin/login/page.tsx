@@ -21,16 +21,21 @@ export default function AdminLoginPage() {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
+        console.log("Login attempt starting for:", email);
 
         try {
+            console.log("Signing in with supabase...");
             const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             })
 
             if (error) {
+                console.error("Supabase auth error:", error);
                 throw error
             }
+
+            console.log("Auth successful, user:", data.user.id);
 
             // Check if user has admin role
             const { data: profile, error: profileError } = await supabase
@@ -39,9 +44,15 @@ export default function AdminLoginPage() {
                 .eq('id', data.user.id)
                 .single()
 
+            console.log("Profile data:", profile);
+            console.log("Profile error:", profileError);
+
             if (profileError || profile?.role !== 'admin') {
-                throw new Error("Unauthorized access")
+                console.error("Unauthorized: Role is", profile?.role);
+                throw new Error("Unauthorized access: Not an admin")
             }
+
+            console.log("Admin verified, redirecting...");
 
             toast({
                 title: "로그인 성공",
@@ -100,7 +111,11 @@ export default function AdminLoginPage() {
                     </CardContent>
                     <CardFooter>
                         <Button
-                            type="submit"
+                            type="button"
+                            onClick={(e) => {
+                                console.log("Button clicked directly");
+                                handleLogin(e);
+                            }}
                             className="w-full bg-[#c9a962] text-[#000000] hover:bg-[#d4b870]"
                             disabled={isLoading}
                         >

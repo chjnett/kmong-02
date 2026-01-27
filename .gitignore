@@ -25,3 +25,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# User Data & Heavy Files
+/scripts/chrome_profile/
+/images/
+/crawled_products.xlsx

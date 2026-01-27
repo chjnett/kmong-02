@@ -141,7 +141,7 @@ export default function ProductEditPage({ params }: PageProps) {
                 subCategory: subCategoryName,
                 description: data.description || "",
                 external_url: data.external_url,
-                price: data.price || "",
+                price: (data.specs as any)?.price || "", // Load price from specs
                 img_urls: data.img_urls || [],
                 specs: (data.specs as any) || { modelNo: "", material: "", size: "", color: "" }
             })
@@ -191,9 +191,12 @@ export default function ProductEditPage({ params }: PageProps) {
                     sub_id: directLookUp.id,
                     description: formData.description,
                     external_url: formData.external_url,
-                    price: formData.price,
+                    // price field does not exist in schema, moving to specs
                     img_urls: formData.img_urls,
-                    specs: formData.specs
+                    specs: {
+                        ...formData.specs,
+                        price: formData.price
+                    }
                 }
                 await submitProduct(payload)
                 return
@@ -204,9 +207,12 @@ export default function ProductEditPage({ params }: PageProps) {
                 sub_id: matchedSub.id,
                 description: formData.description,
                 external_url: formData.external_url,
-                price: formData.price,
+                // price field does not exist in schema, moving to specs
                 img_urls: formData.img_urls,
-                specs: formData.specs
+                specs: {
+                    ...formData.specs,
+                    price: formData.price
+                }
             }
             await submitProduct(payload)
 
