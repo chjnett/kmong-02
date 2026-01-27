@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { KakaoButton } from "@/components/kakao-button"
 import './globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -51,8 +52,10 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${cormorant.variable} font-serif antialiased bg-[#000000] text-[#f5f5f5]`}>
         {children}
+        <KakaoButton />
         <Analytics />
       </body>
     </html>
   )
 }
+

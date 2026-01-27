@@ -148,7 +148,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                             asChild
                             className="w-full h-16 bg-[#CCB700] hover:bg-[#CCB700]/90 text-[#000000] text-lg font-bold tracking-tight shadow-lg hover:scale-[1.01] transition-all border-none relative overflow-hidden group"
                         >
-                            <a href={product.externalUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3">
+                            <a href="https://pf.kakao.com/_xgZxdhX/friend" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3">
                                 <MessageCircle className="h-5 w-5 fill-black" />
                                 <span>카카오톡 1:1 문의하기</span>
                                 {/* Shine effect */}
