@@ -1,8 +1,7 @@
 import { Suspense } from "react"
 import { supabase } from "@/lib/supabase" // Direct import works for public reading
 import { HeroSection } from "@/components/hero-section"
-import { CategoryNav } from "@/components/category-nav"
-import { ProductGrid } from "@/components/product-grid"
+import { ProductSectionClient } from "@/components/product-section-client"
 import { KakaoButton } from "@/components/kakao-button"
 import type { Category, Product } from "@/lib/data"
 
@@ -94,15 +93,12 @@ export default async function HomePage({
     <main className="min-h-screen bg-[#000000]">
       <HeroSection />
 
-      <section id="main-content" className="px-4 py-12 md:px-8 lg:px-16">
-        <CategoryNav
+      <section id="main-content" className="px-4 py-6 md:px-8 lg:px-16">
+        <ProductSectionClient
           categories={mappedCategories}
+          products={formattedProducts}
           selectedCategory={categoryParam}
           selectedSubCategory={subCategoryParam || null}
-        />
-
-        <ProductGrid
-          products={formattedProducts}
         />
       </section>
 

@@ -84,17 +84,17 @@ function AnimatedProductCard({
 
       {/* Product Text Content */}
       <div className="mt-4 space-y-1 px-1">
-        {/* Price - Largest & First */}
+        {/* Title */}
+        <h3 className="line-clamp-1 text-xs font-light text-[#d4d4d4] transition-colors duration-500 group-hover:text-[#c9a962] md:text-sm">
+          {product.title}
+        </h3>
+
+        {/* Price */}
         {product.price && (
           <p className="font-semibold text-[#f5f5f5] text-base md:text-lg tracking-tight">
             {product.price}
           </p>
         )}
-
-        {/* Title */}
-        <h3 className="line-clamp-1 text-xs font-light text-[#d4d4d4] transition-colors duration-500 group-hover:text-[#c9a962] md:text-sm">
-          {product.title}
-        </h3>
 
         {/* SubCategory */}
         <p className="text-[9px] tracking-[0.15em] text-[#525252] uppercase md:text-[10px]">

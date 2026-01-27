@@ -44,10 +44,10 @@ export function CategoryNav({
             key={category.name}
             onClick={() => handleCategoryClick(category.name)}
             className={cn(
-              "relative px-4 py-2 text-xs font-light tracking-[0.3em] uppercase transition-all duration-500 md:text-sm",
+              "relative px-4 py-2 text-sm font-normal tracking-[0.2em] uppercase transition-all duration-500 md:text-base",
               selectedCategory === category.name
                 ? "text-[#ffffff] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]"
-                : "text-[#404040] hover:text-[#737373]"
+                : "text-[#808080] hover:text-[#b3b3b3]"
             )}
           >
             {category.name}
@@ -64,10 +64,10 @@ export function CategoryNav({
           <button
             onClick={() => handleSubCategoryClick(null)}
             className={cn(
-              "rounded-full border px-4 py-1.5 text-[10px] font-light tracking-[0.15em] uppercase transition-all duration-300 md:px-5 md:py-2 md:text-xs",
+              "rounded-full border px-4 py-2 text-xs font-normal tracking-[0.1em] uppercase transition-all duration-300 md:px-5 md:py-2.5 md:text-sm",
               selectedSubCategory === null
-                ? "border-[#ffffff]/20 bg-[#ffffff]/5 text-[#ffffff]"
-                : "border-[#1a1a1a] bg-[#050505] text-[#525252] hover:border-[#333] hover:text-[#a3a3a3]"
+                ? "border-[#ffffff]/30 bg-[#ffffff]/10 text-[#ffffff]"
+                : "border-[#2a2a2a] bg-[#0a0a0a] text-[#707070] hover:border-[#444] hover:text-[#b3b3b3]"
             )}
           >
             전체보기
@@ -77,10 +77,10 @@ export function CategoryNav({
               key={sub}
               onClick={() => handleSubCategoryClick(sub)}
               className={cn(
-                "rounded-full border px-4 py-1.5 text-[10px] font-light tracking-[0.15em] uppercase transition-all duration-300 md:px-5 md:py-2 md:text-xs",
+                "rounded-full border px-4 py-2 text-xs font-normal tracking-[0.1em] uppercase transition-all duration-300 md:px-5 md:py-2.5 md:text-sm",
                 selectedSubCategory === sub
-                  ? "border-[#ffffff]/20 bg-[#ffffff]/5 text-[#ffffff]"
-                  : "border-[#1a1a1a] bg-[#050505] text-[#525252] hover:border-[#333] hover:text-[#a3a3a3]"
+                  ? "border-[#ffffff]/30 bg-[#ffffff]/10 text-[#ffffff]"
+                  : "border-[#2a2a2a] bg-[#0a0a0a] text-[#707070] hover:border-[#444] hover:text-[#b3b3b3]"
               )}
             >
               {sub}
