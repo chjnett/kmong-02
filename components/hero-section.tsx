@@ -77,7 +77,7 @@ export function HeroSection() {
           <div className={`mt-3 flex items-center justify-center gap-3 transition-opacity duration-1000 delay-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
             <span className="h-px w-8 bg-[#c9a962]/40" />
             <p className="text-[10px] tracking-[0.3em] text-[#a3a3a3] uppercase md:text-xs">
-              Luxury Curation
+              에테르나.com
             </p>
             <span className="h-px w-8 bg-[#c9a962]/40" />
           </div>

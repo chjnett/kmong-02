@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 
-import { Plus, Pencil, Trash2, Loader2, LogOut, FolderOpen } from "lucide-react"
+import { Plus, Pencil, Trash2, Loader2, LogOut, FolderOpen, Bell } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
@@ -112,6 +112,12 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="flex gap-2">
                         {/* <SeedButton /> */}
+                        <Button asChild variant="outline" className="border-[#262626] bg-transparent text-[#a3a3a3] hover:bg-[#262626] hover:text-[#f5f5f5]">
+                            <Link href="/admin/dashboard/notices">
+                                <Bell className="mr-2 h-4 w-4" />
+                                공지사항 관리
+                            </Link>
+                        </Button>
                         <Button asChild variant="outline" className="border-[#262626] bg-transparent text-[#a3a3a3] hover:bg-[#262626] hover:text-[#f5f5f5]">
                             <Link href="/admin/dashboard/categories">
                                 <FolderOpen className="mr-2 h-4 w-4" />

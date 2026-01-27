@@ -2,6 +2,7 @@ import { Suspense } from "react"
 import { supabase } from "@/lib/supabase" // Direct import works for public reading
 import { HeroSection } from "@/components/hero-section"
 import { ProductSectionClient } from "@/components/product-section-client"
+import { NoticePopup } from "@/components/notice-popup"
 import type { Category, Product } from "@/lib/data"
 
 // Force dynamic rendering since we rely on searchParams and DB
@@ -100,6 +101,8 @@ export default async function HomePage({
           selectedSubCategory={subCategoryParam || null}
         />
       </section>
+
+      <NoticePopup />
     </main>
   )
 }
