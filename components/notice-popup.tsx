@@ -25,7 +25,7 @@ export function NoticePopup() {
                 .from('notices')
                 .select('*')
                 .eq('is_active', true)
-                .gte('end_date', new Date().toISOString())
+                .or('end_date.is.null,end_date.gte.' + new Date().toISOString())
                 .order('created_at', { ascending: false })
                 .limit(1)
                 .single()
