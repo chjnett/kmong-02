@@ -12,9 +12,6 @@ interface Notice {
 }
 
 export function NoticePopup() {
-    // ⚠️ 임시 비활성화 - notices 테이블 생성 후 이 줄 삭제
-    return null
-
     const [notice, setNotice] = useState<Notice | null>(null)
     const [isOpen, setIsOpen] = useState(false)
 
@@ -23,25 +20,30 @@ export function NoticePopup() {
     }, [])
 
     const fetchActiveNotice = async () => {
-        const { data, error } = await supabase
-            .from('notices')
-            .select('*')
-            .eq('is_active', true)
-            .gte('end_date', new Date().toISOString())
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .single()
+        try {
+            const { data, error } = await supabase
+                .from('notices')
+                .select('*')
+                .eq('is_active', true)
+                .gte('end_date', new Date().toISOString())
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .single()
 
-        if (data && !error) {
-            // 오늘 이미 본 공지인지 확인
-            const closedNoticeId = localStorage.getItem('closed_notice_id')
-            const closedDate = localStorage.getItem('closed_notice_date')
-            const today = new Date().toDateString()
+            if (data && !error) {
+                // 오늘 이미 본 공지인지 확인
+                const closedNoticeId = localStorage.getItem('closed_notice_id')
+                const closedDate = localStorage.getItem('closed_notice_date')
+                const today = new Date().toDateString()
 
-            if (closedNoticeId !== data.id || closedDate !== today) {
-                setNotice(data)
-                setIsOpen(true)
+                if (closedNoticeId !== data.id || closedDate !== today) {
+                    setNotice(data)
+                    setIsOpen(true)
+                }
             }
+        } catch (error) {
+            // 에러 발생 시 조용히 무시 (404 등)
+            console.log('Notice fetch failed:', error)
         }
     }
 
