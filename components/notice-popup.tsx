@@ -12,6 +12,9 @@ interface Notice {
 }
 
 export function NoticePopup() {
+    // ⚠️ 임시 비활성화 - notices 테이블 생성 후 이 줄 삭제
+    return null
+
     const [notice, setNotice] = useState<Notice | null>(null)
     const [isOpen, setIsOpen] = useState(false)
 
