@@ -1,21 +1,26 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import { X } from "lucide-react"
-import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
+import { supabase } from "@/lib/supabase"
 
 interface Notice {
     id: string
     title: string
     content: string
+    is_active: boolean
+    end_date: string | null
 }
 
 export function NoticePopup() {
     const [notice, setNotice] = useState<Notice | null>(null)
     const [isOpen, setIsOpen] = useState(false)
+    const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
+        setMounted(true)
         fetchActiveNotice()
     }, [])
 
@@ -42,7 +47,6 @@ export function NoticePopup() {
                 }
             }
         } catch (error) {
-            // 에러 발생 시 조용히 무시 (404 등)
             console.log('Notice fetch failed:', error)
         }
     }
@@ -55,37 +59,136 @@ export function NoticePopup() {
         setIsOpen(false)
     }
 
-    if (!isOpen || !notice) return null
+    // 서버 사이드 렌더링 방지
+    if (!mounted || !isOpen || !notice) return null
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="relative w-full max-w-md rounded-lg border border-[#c9a962]/30 bg-[#0a0a0a] p-6 shadow-2xl">
+    // Portal을 사용하여 body에 직접 렌더링
+    return createPortal(
+        <div
+            className="notice-popup-overlay"
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 999999,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                backdropFilter: 'blur(4px)',
+                padding: '1rem'
+            }}
+            onClick={handleClose}
+        >
+            <div
+                className="notice-popup-content"
+                style={{
+                    position: 'relative',
+                    width: '100%',
+                    maxWidth: '28rem',
+                    margin: '0 auto',
+                    backgroundColor: '#0a0a0a',
+                    border: '2px solid #c9a962',
+                    borderRadius: '0.75rem',
+                    padding: '2rem',
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
+                    animation: 'popupFadeIn 0.3s ease-out'
+                }}
+                onClick={(e) => e.stopPropagation()}
+            >
                 {/* 닫기 버튼 */}
                 <button
                     onClick={handleClose}
-                    className="absolute top-4 right-4 text-[#737373] hover:text-[#f5f5f5] transition-colors"
+                    style={{
+                        position: 'absolute',
+                        top: '1rem',
+                        right: '1rem',
+                        color: '#c9a962',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '0.25rem',
+                        transition: 'opacity 0.2s',
+                        zIndex: 10
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                    aria-label="닫기"
                 >
-                    <X className="h-5 w-5" />
+                    <X style={{ width: '1.5rem', height: '1.5rem' }} />
                 </button>
 
                 {/* 제목 */}
-                <h2 className="text-xl font-medium text-[#c9a962] mb-4">
+                <h2
+                    style={{
+                        fontSize: '1.5rem',
+                        fontWeight: '600',
+                        color: '#c9a962',
+                        marginBottom: '1rem',
+                        paddingRight: '2.5rem',
+                        lineHeight: '1.4'
+                    }}
+                >
                     {notice.title}
                 </h2>
 
                 {/* 내용 */}
-                <div className="text-sm text-[#a3a3a3] leading-relaxed whitespace-pre-wrap mb-6">
+                <div
+                    style={{
+                        fontSize: '0.95rem',
+                        color: '#e5e5e5',
+                        lineHeight: '1.6',
+                        whiteSpace: 'pre-wrap',
+                        marginBottom: '1.5rem'
+                    }}
+                >
                     {notice.content}
                 </div>
 
-                {/* 오늘 하루 보지 않기 버튼 */}
+                {/* 버튼 */}
                 <Button
                     onClick={handleClose}
-                    className="w-full bg-[#c9a962] text-[#000000] hover:bg-[#d4b870]"
+                    style={{
+                        width: '100%',
+                        backgroundColor: '#c9a962',
+                        color: '#000000',
+                        fontWeight: '600',
+                        padding: '0.75rem',
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#d4b870'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#c9a962'}
                 >
                     오늘 하루 보지 않기
                 </Button>
             </div>
-        </div>
+
+            <style jsx global>{`
+                @keyframes popupFadeIn {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.95) translateY(-10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: scale(1) translateY(0);
+                    }
+                }
+                
+                .notice-popup-overlay {
+                    -webkit-tap-highlight-color: transparent;
+                }
+                
+                .notice-popup-content {
+                    -webkit-tap-highlight-color: transparent;
+                }
+            `}</style>
+        </div>,
+        document.body
     )
 }
