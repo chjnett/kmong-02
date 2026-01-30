@@ -4,6 +4,7 @@ import { HeroSection } from "@/components/hero-section"
 import { ProductSectionClient } from "@/components/product-section-client"
 import { NoticePopup } from "@/components/notice-popup"
 import type { Category, Product } from "@/lib/data"
+import { incrementVisitor, getVisitorStats } from "@/app/actions/visitor-actions"
 
 // Force dynamic rendering since we rely on searchParams and DB
 export const dynamic = "force-dynamic"
@@ -14,6 +15,15 @@ export default async function HomePage({
 }: {
   searchParams: Promise<{ category?: string; subCategory?: string }>
 }) {
+  // Increment visitor count on page load (server-side)
+  // We fire-and-forget this promise so it doesn't block the page load significantly,
+  // or we can await it if we want to ensure it counts before rendering.
+  // Ideally, this should be inside a useEffect on client or middleware, but Server Component is the request entry.
+  // NOTE: In Next.js Server Components, async operations are fine.
+  incrementVisitor().catch(err => console.error("Stats tracking failed", err));
+
+  const statsPromise = getVisitorStats(); // Start fetching concurrently
+
   const params = await searchParams
   const categoryParam = (params.category || "전체").normalize("NFC")
   const subCategoryParam = params.subCategory?.normalize("NFC")
@@ -27,7 +37,7 @@ export default async function HomePage({
   // Map to UI Category Interface
   const mappedCategories: Category[] = [
     { name: "전체", subCategories: [] },
-    ...(categoriesData?.map(c => ({
+    ...(categoriesData?.map((c: any) => ({
       name: c.name,
       subCategories: c.sub_categories?.map((s: any) => s.name) || []
     })) || [])
@@ -89,9 +99,17 @@ export default async function HomePage({
     formattedProducts = formattedProducts.filter(p => p.subCategory === subCategoryParam)
   }
 
+  const stats = await statsPromise;
+
   return (
     <main className="min-h-screen bg-[#000000]">
       <HeroSection />
+
+      {/* Visitor Stats Display */}
+      <div className="w-full flex justify-center py-4 bg-black/50 text-white/50 text-xs md:text-sm font-light space-x-6 border-b border-white/5">
+        <span>ALL TIME: <span className="text-white/80 font-normal">{stats.total_count.toLocaleString()}</span></span>
+        <span>TODAY: <span className="text-white/80 font-normal">{stats.today_count.toLocaleString()}</span></span>
+      </div>
 
       <section id="main-content" className="px-4 py-6 md:px-8 lg:px-16">
         <ProductSectionClient
