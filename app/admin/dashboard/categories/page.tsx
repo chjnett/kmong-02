@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { ChevronLeft, Plus, Trash2, Folder, FolderOpen, Loader2, ArrowUp, ArrowDown } from "lucide-react"
+import { ChevronLeft, Plus, Trash2, Folder, FolderOpen, Loader2, ArrowUp, ArrowDown, Edit, Check, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -23,6 +23,12 @@ export default function CategoryManagementPage() {
     const [newCategoryName, setNewCategoryName] = useState("")
     const [newSubCategoryInput, setNewSubCategoryInput] = useState<{ [key: number]: string }>({})
     const [isSubmitting, setIsSubmitting] = useState(false)
+
+    // Editing states
+    const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null)
+    const [editingCategoryName, setEditingCategoryName] = useState("")
+    const [editingSubCategoryId, setEditingSubCategoryId] = useState<number | null>(null)
+    const [editingSubCategoryName, setEditingSubCategoryName] = useState("")
 
     const router = useRouter()
     const { toast } = useToast()
@@ -191,6 +197,86 @@ export default function CategoryManagementPage() {
         }
     }
 
+    const handleStartEditCategory = (id: number, name: string) => {
+        setEditingCategoryId(id)
+        setEditingCategoryName(name)
+    }
+
+    const handleSaveCategory = async (id: number) => {
+        if (!editingCategoryName.trim()) {
+            toast({
+                variant: "destructive",
+                title: "카테고리 이름을 입력해주세요"
+            })
+            return
+        }
+
+        try {
+            const { error } = await supabase
+                .from('categories')
+                .update({ name: editingCategoryName })
+                .eq('id', id)
+
+            if (error) throw error
+
+            toast({ title: "카테고리 수정 성공" })
+            setEditingCategoryId(null)
+            setEditingCategoryName("")
+            fetchCategories()
+        } catch (error: any) {
+            toast({
+                variant: "destructive",
+                title: "수정 실패",
+                description: error.message
+            })
+        }
+    }
+
+    const handleCancelEditCategory = () => {
+        setEditingCategoryId(null)
+        setEditingCategoryName("")
+    }
+
+    const handleStartEditSubCategory = (id: number, name: string) => {
+        setEditingSubCategoryId(id)
+        setEditingSubCategoryName(name)
+    }
+
+    const handleSaveSubCategory = async (id: number) => {
+        if (!editingSubCategoryName.trim()) {
+            toast({
+                variant: "destructive",
+                title: "하위 카테고리 이름을 입력해주세요"
+            })
+            return
+        }
+
+        try {
+            const { error } = await supabase
+                .from('sub_categories')
+                .update({ name: editingSubCategoryName })
+                .eq('id', id)
+
+            if (error) throw error
+
+            toast({ title: "하위 카테고리 수정 성공" })
+            setEditingSubCategoryId(null)
+            setEditingSubCategoryName("")
+            fetchCategories()
+        } catch (error: any) {
+            toast({
+                variant: "destructive",
+                title: "수정 실패",
+                description: error.message
+            })
+        }
+    }
+
+    const handleCancelEditSubCategory = () => {
+        setEditingSubCategoryId(null)
+        setEditingSubCategoryName("")
+    }
+
     return (
         <div className="min-h-screen bg-[#0a0a0a] pb-20">
             {/* Header */}
@@ -241,9 +327,50 @@ export default function CategoryManagementPage() {
                             <div key={category.id} className="rounded-lg border border-[#262626] bg-[#111111] overflow-hidden flex flex-col">
                                 {/* Category Header */}
                                 <div className="flex items-center justify-between border-b border-[#262626] bg-[#1a1a1a] p-3">
-                                    <div className="flex items-center gap-2 text-[#f5f5f5] font-medium">
+                                    <div className="flex items-center gap-2 text-[#f5f5f5] font-medium flex-1">
                                         <Folder className="h-4 w-4 text-[#c9a962]" />
-                                        {category.name}
+                                        {editingCategoryId === category.id ? (
+                                            <div className="flex items-center gap-1 flex-1">
+                                                <Input
+                                                    value={editingCategoryName}
+                                                    onChange={(e) => setEditingCategoryName(e.target.value)}
+                                                    className="h-7 text-sm bg-[#0a0a0a] text-[#f5f5f5] border-[#262626]"
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') handleSaveCategory(category.id)
+                                                        if (e.key === 'Escape') handleCancelEditCategory()
+                                                    }}
+                                                    autoFocus
+                                                />
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-7 w-7 text-green-500 hover:text-green-400 hover:bg-[#262626]"
+                                                    onClick={() => handleSaveCategory(category.id)}
+                                                >
+                                                    <Check className="h-4 w-4" />
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-7 w-7 text-red-500 hover:text-red-400 hover:bg-[#262626]"
+                                                    onClick={handleCancelEditCategory}
+                                                >
+                                                    <X className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <span>{category.name}</span>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-7 w-7 text-[#737373] hover:text-[#f5f5f5] hover:bg-[#262626]"
+                                                    onClick={() => handleStartEditCategory(category.id, category.name)}
+                                                >
+                                                    <Edit className="h-3 w-3" />
+                                                </Button>
+                                            </>
+                                        )}
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <Button
@@ -280,13 +407,54 @@ export default function CategoryManagementPage() {
                                     <ul className="space-y-1">
                                         {category.sub_categories.map((sub) => (
                                             <li key={sub.id} className="group flex items-center justify-between rounded px-2 py-1.5 hover:bg-[#262626]">
-                                                <span className="text-sm text-[#a3a3a3]">{sub.name}</span>
-                                                <button
-                                                    onClick={() => handleDeleteSubCategory(sub.id)}
-                                                    className="p-2 md:p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 text-[#525252] hover:text-red-500 transition-opacity"
-                                                >
-                                                    <Trash2 className="h-4 w-4 md:h-3 md:w-3" />
-                                                </button>
+                                                {editingSubCategoryId === sub.id ? (
+                                                    <div className="flex items-center gap-1 flex-1">
+                                                        <Input
+                                                            value={editingSubCategoryName}
+                                                            onChange={(e) => setEditingSubCategoryName(e.target.value)}
+                                                            className="h-6 text-xs bg-[#0a0a0a] text-[#f5f5f5] border-[#262626]"
+                                                            onKeyDown={(e) => {
+                                                                if (e.key === 'Enter') handleSaveSubCategory(sub.id)
+                                                                if (e.key === 'Escape') handleCancelEditSubCategory()
+                                                            }}
+                                                            autoFocus
+                                                        />
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="h-6 w-6 text-green-500 hover:text-green-400 hover:bg-[#262626]"
+                                                            onClick={() => handleSaveSubCategory(sub.id)}
+                                                        >
+                                                            <Check className="h-3 w-3" />
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="h-6 w-6 text-red-500 hover:text-red-400 hover:bg-[#262626]"
+                                                            onClick={handleCancelEditSubCategory}
+                                                        >
+                                                            <X className="h-3 w-3" />
+                                                        </Button>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        <span className="text-sm text-[#a3a3a3] flex-1">{sub.name}</span>
+                                                        <div className="flex items-center gap-1">
+                                                            <button
+                                                                onClick={() => handleStartEditSubCategory(sub.id, sub.name)}
+                                                                className="p-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 text-[#525252] hover:text-[#f5f5f5] transition-opacity"
+                                                            >
+                                                                <Edit className="h-3 w-3" />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleDeleteSubCategory(sub.id)}
+                                                                className="p-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 text-[#525252] hover:text-red-500 transition-opacity"
+                                                            >
+                                                                <Trash2 className="h-3 w-3" />
+                                                            </button>
+                                                        </div>
+                                                    </>
+                                                )}
                                             </li>
                                         ))}
                                         {category.sub_categories.length === 0 && (
