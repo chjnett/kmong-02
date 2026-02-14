@@ -5,7 +5,7 @@ import { MessageCircle } from "lucide-react"
 export function KakaoButton() {
   const handleClick = () => {
     // Replace with actual KakaoTalk channel URL
-    window.open("https://pf.kakao.com/_xgZxdhX/friend", "_blank")
+    window.open("https://open.kakao.com/o/shJstlgi", "_blank")
   }
 
   return (
