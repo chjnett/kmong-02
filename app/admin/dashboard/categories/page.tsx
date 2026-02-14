@@ -302,13 +302,15 @@ export default function CategoryManagementPage() {
                             value={newCategoryName}
                             onChange={(e) => setNewCategoryName(e.target.value)}
                             placeholder="카테고리 이름 (예: 신발)"
-                            className="bg-[#0a0a0a] text-[#f5f5f5] border-[#262626]"
-                            onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
+                            className="bg-[#0a0a0a] text-[#f5f5f5] border-[#262626] h-10"
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !e.nativeEvent.isComposing) handleAddCategory()
+                            }}
                         />
                         <Button
                             onClick={handleAddCategory}
                             disabled={isSubmitting || !newCategoryName.trim()}
-                            className="bg-[#c9a962] text-black hover:bg-[#c9a962]/90"
+                            className="bg-[#c9a962] text-black hover:bg-[#c9a962]/90 h-10 px-4"
                         >
                             <Plus className="mr-2 h-4 w-4" />
                             추가
@@ -334,8 +336,9 @@ export default function CategoryManagementPage() {
                                                 <Input
                                                     value={editingCategoryName}
                                                     onChange={(e) => setEditingCategoryName(e.target.value)}
-                                                    className="h-7 text-sm bg-[#0a0a0a] text-[#f5f5f5] border-[#262626]"
+                                                    className="h-9 text-sm bg-[#0a0a0a] text-[#f5f5f5] border-[#262626]"
                                                     onKeyDown={(e) => {
+                                                        if (e.nativeEvent.isComposing) return
                                                         if (e.key === 'Enter') handleSaveCategory(category.id)
                                                         if (e.key === 'Escape') handleCancelEditCategory()
                                                     }}
@@ -344,18 +347,18 @@ export default function CategoryManagementPage() {
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    className="h-7 w-7 text-green-500 hover:text-green-400 hover:bg-[#262626]"
+                                                    className="h-9 w-9 text-green-500 hover:text-green-400 hover:bg-[#262626]"
                                                     onClick={() => handleSaveCategory(category.id)}
                                                 >
-                                                    <Check className="h-4 w-4" />
+                                                    <Check className="h-5 w-5" />
                                                 </Button>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    className="h-7 w-7 text-red-500 hover:text-red-400 hover:bg-[#262626]"
+                                                    className="h-9 w-9 text-red-500 hover:text-red-400 hover:bg-[#262626]"
                                                     onClick={handleCancelEditCategory}
                                                 >
-                                                    <X className="h-4 w-4" />
+                                                    <X className="h-5 w-5" />
                                                 </Button>
                                             </div>
                                         ) : (
@@ -364,10 +367,10 @@ export default function CategoryManagementPage() {
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    className="h-7 w-7 text-[#737373] hover:text-[#f5f5f5] hover:bg-[#262626]"
+                                                    className="h-9 w-9 text-[#737373] hover:text-[#f5f5f5] hover:bg-[#262626]"
                                                     onClick={() => handleStartEditCategory(category.id, category.name)}
                                                 >
-                                                    <Edit className="h-3 w-3" />
+                                                    <Edit className="h-4 w-4" />
                                                 </Button>
                                             </>
                                         )}
@@ -412,8 +415,9 @@ export default function CategoryManagementPage() {
                                                         <Input
                                                             value={editingSubCategoryName}
                                                             onChange={(e) => setEditingSubCategoryName(e.target.value)}
-                                                            className="h-6 text-xs bg-[#0a0a0a] text-[#f5f5f5] border-[#262626]"
+                                                            className="h-8 text-xs bg-[#0a0a0a] text-[#f5f5f5] border-[#262626]"
                                                             onKeyDown={(e) => {
+                                                                if (e.nativeEvent.isComposing) return
                                                                 if (e.key === 'Enter') handleSaveSubCategory(sub.id)
                                                                 if (e.key === 'Escape') handleCancelEditSubCategory()
                                                             }}
@@ -422,18 +426,18 @@ export default function CategoryManagementPage() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            className="h-6 w-6 text-green-500 hover:text-green-400 hover:bg-[#262626]"
+                                                            className="h-8 w-8 text-green-500 hover:text-green-400 hover:bg-[#262626]"
                                                             onClick={() => handleSaveSubCategory(sub.id)}
                                                         >
-                                                            <Check className="h-3 w-3" />
+                                                            <Check className="h-4 w-4" />
                                                         </Button>
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            className="h-6 w-6 text-red-500 hover:text-red-400 hover:bg-[#262626]"
+                                                            className="h-8 w-8 text-red-500 hover:text-red-400 hover:bg-[#262626]"
                                                             onClick={handleCancelEditSubCategory}
                                                         >
-                                                            <X className="h-3 w-3" />
+                                                            <X className="h-4 w-4" />
                                                         </Button>
                                                     </div>
                                                 ) : (
@@ -442,15 +446,15 @@ export default function CategoryManagementPage() {
                                                         <div className="flex items-center gap-1">
                                                             <button
                                                                 onClick={() => handleStartEditSubCategory(sub.id, sub.name)}
-                                                                className="p-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 text-[#525252] hover:text-[#f5f5f5] transition-opacity"
+                                                                className="p-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 text-[#525252] hover:text-[#f5f5f5] transition-opacity"
                                                             >
-                                                                <Edit className="h-3 w-3" />
+                                                                <Edit className="h-4 w-4" />
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDeleteSubCategory(sub.id)}
-                                                                className="p-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 text-[#525252] hover:text-red-500 transition-opacity"
+                                                                className="p-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 text-[#525252] hover:text-red-500 transition-opacity"
                                                             >
-                                                                <Trash2 className="h-3 w-3" />
+                                                                <Trash2 className="h-4 w-4" />
                                                             </button>
                                                         </div>
                                                     </>
@@ -468,12 +472,14 @@ export default function CategoryManagementPage() {
                                             value={newSubCategoryInput[category.id] || ""}
                                             onChange={(e) => setNewSubCategoryInput(prev => ({ ...prev, [category.id]: e.target.value }))}
                                             placeholder="하위 추가..."
-                                            className="h-8 text-xs bg-[#0a0a0a] text-[#f5f5f5] border-[#262626]"
-                                            onKeyDown={(e) => e.key === 'Enter' && handleAddSubCategory(category.id)}
+                                            className="h-9 text-xs bg-[#0a0a0a] text-[#f5f5f5] border-[#262626]"
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter' && !e.nativeEvent.isComposing) handleAddSubCategory(category.id)
+                                            }}
                                         />
                                         <Button
                                             size="icon"
-                                            className="h-8 w-8 shrink-0 bg-[#262626] hover:bg-[#333333]"
+                                            className="h-9 w-9 shrink-0 bg-[#262626] hover:bg-[#333333]"
                                             onClick={() => handleAddSubCategory(category.id)}
                                             disabled={!newSubCategoryInput[category.id]?.trim()}
                                         >
